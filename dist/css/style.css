@@ -248,6 +248,16 @@ header {
   width: 100%;
   background: #f5f5f5; }
 
+.playlist-container .playlist-header .playlist-header-title {
+  flex: 1; }
+
+.playlist-container .playlist-header .close-playlist-modal {
+  opacity: 0.5;
+  cursor: pointer; }
+
+.playlist-container .playlist-header .close-playlist-modal:hover {
+  opacity: 1; }
+
 .playlist-container .playlist-content {
   flex: 1;
   max-height: 400px;
@@ -377,5 +387,9 @@ header {
 
 .music-credits a:hover {
   color: #fff; }
+
+@media (max-width: 500px) {
+  #logo {
+    display: none; } }
 
 /*# sourceMappingURL=style.css.map */

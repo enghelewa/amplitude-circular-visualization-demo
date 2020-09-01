@@ -67,8 +67,9 @@
 </small>
 <div class="playlist-backdrop"></div>
 <div class="playlist-container flex-center">
-    <div class="playlist-header">
-        <h4>Playlist</h4>
+    <div class="playlist-header flex-center">
+        <h4 class="playlist-header-title">Playlist</h4>
+        <span class="close-playlist-modal"><span class="fas fa-times"></span></span>
     </div>
     <div class="playlist-content">
         <script id="songsTemp" type="application/x-handlebars">
@@ -210,7 +211,7 @@
             $('body').addClass('show-playlist');
         });
 
-        $('.playlist-backdrop').click(function(){
+        $('.playlist-backdrop,.close-playlist-modal').click(function(){
             $('body').removeClass('show-playlist');
         });
 
