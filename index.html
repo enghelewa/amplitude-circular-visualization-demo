@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amplitude Circular Equalizer</title>
+    <link rel="stylesheet" href="dist/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="dist/img/faveicon.svg">
+</head>
+<body class="flex-center playing">
+<div class="cover blurred"></div>
+<header class="flex-center" title="Crafted with love by Mohammed Helewa">
+    <a id="logo" target="_blank" href="https://www.facebook.com/mohammed.helewa"></a>
+</header>
+<div class="song-meta-data">
+    <h4 data-amplitude-song-info="name" class="song-name"></h4>
+    <small>By: <span data-amplitude-song-info="artist" class="song-artist"></span></small>
+    <br>
+</div>
+<div class="container">
+    <div class="cover"></div>
+    <div class="audio-player-container">
+        <div class="audio-player flex-center">
+            <div class="play-button-container trans-center flex-stretch">
+                <div class="amplitude-play-pause amplitude-paused flex-center rounded-circle">
+                    <i class="play-icon fas fa-play"></i>
+                    <i class="pause-icon fas fa-pause"></i>
+                </div>
+            </div>
+            <div id="slider"></div>
+            <div class="amplitude-visualization flex-center"></div>
+            <div class="time-container">
+                <small class="current-time">
+                    <span class="amplitude-current-minutes"></span>:<span class="amplitude-current-seconds"></span>
+                </small>
+                <small class="time-spacer rounded-circle">/</small>
+                <small class="duration">
+                    <span class="amplitude-duration-minutes"></span>:<span class="amplitude-duration-seconds"></span>
+                </small>
+            </div>
+            <div class="small-controls flex-center">
+                <div class="small-btn flex-center amplitude-shuffle amplitude-shuffle-off" id="shuffle">
+                    <i class="fas fa-random"></i>
+                </div>
+                <div class="small-btn flex-center show-playlist">
+                    <i class="fab fa-buffer"></i>
+                </div>
+                <div class="small-btn flex-center amplitude-repeat amplitude-repeat-off" id="repeat">
+                    <i class="fas fa-retweet"></i>
+                </div>
+            </div>
+            <div class="other-control flex-center">
+                <span class="flex-center amplitude-prev"><i class="fas fa-angle-left"></i></span>
+                <span class="flex-center amplitude-stop"><i class="fas fa-stop"></i></span>
+                <span class="flex-center amplitude-next"><i class="fas fa-angle-right"></i></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<small class="music-credits flex-center">
+    Music from<a href="https://pixabay.com/music/" target="_blank">Pixabay</a>
+</small>
+<div class="playlist-backdrop"></div>
+<div class="playlist-container flex-center">
+    <div class="playlist-header">
+        <h4>Playlist</h4>
+    </div>
+    <div class="playlist-content">
+        <script id="songsTemp" type="application/x-handlebars">
+            {{#each this}}
+            <div class="playlist-song flex-center" data-amplitude-song-index="{{index}}">
+                <div class="song-img">
+                    <i class="play-icon fas fa-play"></i>
+                    <img src="{{cover_art_url}}" alt="">
+                </div>
+                <div class="song-info flex-center">
+                    <strong class="song-name">{{name}}</strong>
+                    <small class="song-artist">{{artist}}</small>
+                </div>
+            </div>
+            {{/each}}
+        </script>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/amplitudejs/5.0.3/amplitude.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+<script src="dist/js/circular-equalizer.js"></script>
+
+<script>
+    var songsTemp;
+
+    window.onkeydown = function (e) {
+        return !(e.keyCode == 32);
+    };
+
+    $(function () {
+        songsTemp = Handlebars.compile($('#songsTemp').html());
+        $("#slider").roundSlider({
+            animation: false,
+            showTooltip: false,
+            svgMode: true,
+            radius: 110,
+            step:0.01,
+            width: 7,
+            value: 0,
+            handleSize:20,
+            startAngle: 315,
+            borderWidth:0,
+            sliderType: "min-range",
+            handleShape: "circle",
+            lineCap:'round',
+            circleShape: "pie",
+            update: function (e) {
+                Amplitude.setSongPlayedPercentage(e.value);
+            }
+        });
+
+        Amplitude.init({
+            "bindings": {
+                37: 'prev',
+                39: 'next',
+                32: 'play_pause'
+            },
+
+            songs: [
+                {
+                    "name": "Robot Gypsy Jazz",
+                    "artist": "John Bartmann",
+                    "url": "http://localhost:3000/dist/audio/audio_613575b827.mp3",
+                    "cover_art_url": "https://picsum.photos/id/524/400/400",
+                },
+                {
+                    "name": "Happy Clappy",
+                    "artist": "John Bartmann",
+                    "album": "Happy",
+                    "url": "http://localhost:3000/dist/audio/0106_John_Bartmann_-_09_-_Happy_Clappy.mp3",
+                    "cover_art_url": "https://picsum.photos/id/57/400/400"
+                },
+                {
+                    "name": "Umlungu",
+                    "artist": "John Bartmann",
+                    "url": "http://localhost:3000/dist/audio/audio_30accddfa3.mp3",
+                    "cover_art_url": "https://picsum.photos/id/554/400/400",
+                },
+                {
+                    "name": "Happy African Village",
+                    "artist": "John Bartmann",
+                    "url": "http://localhost:3000/dist/audio/0109_John_Bartmann_-_02_-_Happy_African_Village.mp3",
+                    "cover_art_url": "https://picsum.photos/id/316/400/400",
+                }
+            ],
+            playlists:[
+
+            ],
+
+            visualizations: [
+                {
+                    object: CircularEqualizer,
+                    params:{
+                        barWidth:2,
+                        barHeight:2,
+                        barSpacing:5,
+                        radius:180,
+                        barColor:'#fff',
+                        shadowColor:'#9438be',
+                        shadowBlur:3,
+                    }
+                }
+            ],
+            visualization: 'circular_equalizer',
+            callbacks:{
+                initialized:function(){
+                    var songs = Amplitude.getSongs();
+                    if(songs.length > 0)
+                        Amplitude.playSongAtIndex(0);
+
+                    $('.playlist-content').html(songsTemp(songs));
+                },
+                play:function(){
+                    var song = Amplitude.getActiveSongMetadata();
+                    if(song) {
+                        $('body').addClass('playing');
+                        $('.cover').css('backgroundImage', 'url(' + song.cover_art_url + ')');
+                        $('.playlist-content .playlist-song').removeClass('active');
+                        $('.playlist-content .playlist-song').eq(song.index).addClass('active');
+                    }
+                },
+                stop:function(){
+                    $('body').removeClass('playing');
+                },
+                pause:function(){
+                    $('body').removeClass('playing');
+                },
+                timeupdate: function(){
+                    $("#slider").roundSlider("option", "value", Amplitude.getSongPlayedPercentage() || 0);
+                }
+            }
+        });
+
+        $('.show-playlist').click(function(){
+            $('body').addClass('show-playlist');
+        });
+
+        $('.playlist-backdrop').click(function(){
+            $('body').removeClass('show-playlist');
+        });
+
+        $('.playlist-song').click(function(){
+            Amplitude.playSongAtIndex($(this).data('amplitude-song-index'));
+        });
+    });
+</script>
+</body>
+</html>
